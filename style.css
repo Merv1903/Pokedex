@@ -63,10 +63,21 @@ body.overlay_no_scroll {
   height: 40px;
 }
 
+.header_left_logo_container {
+  
+  background-size: cover;
+}
+
 .header_left_logo_caption {
-  font-size: 23px;
+  font-size: 33px;
   margin: 0;
-  color: #f97d00;
+  color: #b90a0a;
+}
+
+.header_left_logo_caption_subtitle {
+   font-size: 14px;
+  margin: 0;
+  color: #000000;
 }
 
 /* CONTENT  */
