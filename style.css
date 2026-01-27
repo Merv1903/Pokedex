@@ -82,6 +82,54 @@ body.overlay_no_scroll {
 
 /* CONTENT  */
 
+.d-none {
+  display: none;
+}
+
+.pokemon-card {
+  display: flex;
+}
+
+#overlay {
+display: block;
+}
+
+#overlay_content{
+display: flex;
+}
+
+/*
+.d-none {
+  display: none;
+}
+
+.pokemon-card {
+  display: flex;
+}
+
+...
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+#overlay_inner {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+*/
+
+
+
 .content_menu_and_sidebar {
   display: flex;
   /* width: max-content; */

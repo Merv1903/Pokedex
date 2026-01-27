@@ -38,26 +38,28 @@
           </div>
         </div>
       </header>
-      <!--Pokemons -->
+      <!--Content -->
       <main id="content" class="content">
 
-    <div id="loader" class="loader hidden">
-    Loading Pokémon...
+    
+<div id="loader" class="loader d-none"></div>
+
+  <!-- Overlay -->
+  <div id="overlay" class="overlay d-none" onclick="closeOverlay()">
+    <div id="overlay_inner" onclick="event.stopPropagation()"></div>
   </div>
 
-  <!--Container -->
+  <!-- Container für Karten -->
   <div id="pokemons_container" class="pokemon-grid">
-    <!-- JS fügt hier Pokémon-Karten ein -->
-  </div>
+    
+  </div>é
 
-  <!--Load more... -->
+
+
   <button id="load_more_btn" onclick="loadNextPokemons()">
     Load more
   </button>
-        <div
-          id="content_menu_and_sidebar"
-          class="content_menu_and_sidebar"
-        ></div>
+       
       </main>
 
       <footer class="footer">

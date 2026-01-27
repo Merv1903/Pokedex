@@ -36,7 +36,6 @@ async function loadNextPokemons() {
   isLoading = false;
 }
 
-
 function renderPokemon(pokemon, index) {
   let container = document.getElementById("pokemons_container");
 
@@ -46,15 +45,18 @@ function renderPokemon(pokemon, index) {
       <img src="${pokemon.sprites.front_default}">
     </div>
   `;
+ 
 }
 
 
 function openOverlay(index) {
   let pokemon = allPokemons[index];
 
-  document.getElementById("overlay").classList.remove("d-none");
+  let overlay = document.getElementById("overlay");
+  let inner = document.getElementById("overlay_inner");
 
-  document.getElementById("overlay_content").innerHTML = `
+  inner.innerHTML = `
+    <button onclick="closeOverlay()">X</button>
     <h2>${pokemon.name}</h2>
     <img src="${pokemon.sprites.front_default}">
     <p>Height: ${pokemon.height}</p>
@@ -62,10 +64,11 @@ function openOverlay(index) {
     <p>Attack: ${pokemon.stats[1].base_stat}</p>
     <p>Defense: ${pokemon.stats[2].base_stat}</p>
   `;
-}
+  overlay.classList.remove("d-none");
 
+}
 
 function closeOverlay() {
-  document.getElementById("overlay").classList.add("d-none");
+  let overlay = document.getElementById("overlay");
+  overlay.classList.add("d-none");
 }
-
