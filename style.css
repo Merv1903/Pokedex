@@ -81,7 +81,7 @@ body.overlay_no_scroll {
 }
 
 /* CONTENT  */
-
+/*
 .d-none {
   display: none;
 }
@@ -98,7 +98,7 @@ display: block;
 display: flex;
 }
 
-/*
+*/
 .d-none {
   display: none;
 }
@@ -107,15 +107,15 @@ display: flex;
   display: flex;
 }
 
-...
+
 .overlay {
   position: fixed;
   inset: 0;
   background: rgba(0,0,0,0.6);
-  display: flex;
+  /*display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 999;
+  z-index: 999;*/
 }
 
 #overlay_inner {
@@ -126,7 +126,7 @@ display: flex;
   flex-direction: column;
   gap: 8px;
 }
-*/
+
 
 
 
