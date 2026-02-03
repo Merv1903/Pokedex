@@ -56,7 +56,7 @@ function openOverlay(index) {
   let inner = document.getElementById("overlay_inner");
 
   inner.innerHTML = `
-    <button onclick="closeOverlay()">X</button>
+     <button onclick="closeOverlay(event)">X</button>
     <h2>${pokemon.name}</h2>
     <img src="${pokemon.sprites.front_default}">
     <p>Height: ${pokemon.height}</p>
@@ -68,7 +68,8 @@ function openOverlay(index) {
 
 }
 
-function closeOverlay() {
+function closeOverlay(event) {
+  event.stopPropagation();  
   let overlay = document.getElementById("overlay");
   overlay.classList.add("d-none");
 }
