@@ -38,38 +38,19 @@ async function loadNextPokemons() {
 
 function renderPokemon(pokemon, index) {
   let container = document.getElementById("pokemons_container");
-
-  container.innerHTML += `
-    <div class="pokemon-card" onclick="openOverlay(${index})">
-      <h3>#${pokemon.id} ${pokemon.name}</h3>
-      <img src="${pokemon.sprites.front_default}">
-    </div>
-  `;
- 
+  container.innerHTML += pokemonCardTemplate(pokemon, index);
 }
 
-
 function openOverlay(index) {
-  let pokemon = allPokemons[index];
-
   let overlay = document.getElementById("overlay");
   let inner = document.getElementById("overlay_inner");
 
-  inner.innerHTML = `
-     <button onclick="closeOverlay(event)">X</button>
-    <h2>${pokemon.name}</h2>
-    <img src="${pokemon.sprites.front_default}">
-    <p>Height: ${pokemon.height}</p>
-    <p>Weight: ${pokemon.weight}</p>
-    <p>Attack: ${pokemon.stats[1].base_stat}</p>
-    <p>Defense: ${pokemon.stats[2].base_stat}</p>
-  `;
+  inner.innerHTML = overlayTemplate(allPokemons[index]);
   overlay.classList.remove("d-none");
-
 }
 
 function closeOverlay(event) {
-  event.stopPropagation();  
+  event.stopPropagation();
   let overlay = document.getElementById("overlay");
   overlay.classList.add("d-none");
 }
