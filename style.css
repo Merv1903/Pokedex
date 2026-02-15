@@ -34,11 +34,25 @@ body.overlay_no_scroll {
 }
 
 .header {
-  display: grid;
+  /*display: grid;
   justify-content: center;
   background-color: white;
   padding-bottom: 10px;
   box-shadow: 0 1px 8px 0 rgb(0 0 0 / 27%);
+  */
+   
+
+  background-image: url("img/geralt-lightning-68920_1280.jpg"); 
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  position: relative;
+ border-bottom: 20px solid #a8c8ed; 
 }
 
 .header_content {
@@ -47,20 +61,21 @@ body.overlay_no_scroll {
   gap: 40px;
   width: 90vw;
   justify-content: space-between;
+
 }
 
 .header_left {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-items: center;
 
   padding-top: 10px;
 }
 
 .header_left_logo {
-  padding: 10px;
-  width: 40px;
-  height: 40px;
+  padding: 5px;
+  width: 80px;
+  height: 80px;
 }
 
 .header_left_logo_container {
@@ -77,8 +92,46 @@ body.overlay_no_scroll {
 .header_left_logo_caption_subtitle {
    font-size: 14px;
   margin: 0;
-  color: #000000;
+  color: #ffffff;
 }
+
+/*++++++++++++++++++++++++++++++++++++++++++*/
+
+
+/* SEARCH */
+.header_search {
+  display: flex;
+  flex-direction: column;
+  width: 250px;
+}
+
+.header_search input {
+  padding: 8px 12px;
+  border-radius: 20px;
+  border: none;
+  outline: none;
+  font-size: 14px;
+}
+
+.header_search input {
+  padding: 10px 15px;
+  border-radius: 30px;
+  border: 2px solid transparent;
+  transition: 0.3s;
+}
+
+.header_search input:focus {
+  border: 2px solid #ffcc00;
+}
+
+.search-message {
+  font-size: 12px;
+  margin-top: 5px;
+  color: #ff6b6b;
+}
+
+
+
 
 /* CONTENT  */
 /*
@@ -102,12 +155,13 @@ display: flex;
 .overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0,0,0,0.6);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 9999;
+  z-index: 999;
 }
+
 
 .overlay-center {
   display: flex;
@@ -131,21 +185,14 @@ display: flex;
 
 
 .overlay-card {
-  position: relative;
-  width: 420px;            
-  max-width: 90vw;
-  min-height: 560px;
-
-  border-radius: 18px;
-  overflow: hidden;
-
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
   background: white;
-
-  display: flex;
-  flex-direction: column;
+  width: 500px;
+  max-width: 95%;
+  border-radius: 20px;
+  padding: 30px;
+  position: relative;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.3);
 }
-
 
 .overlay-close-btn {
   position: absolute;
@@ -189,14 +236,209 @@ display: flex;
   background: linear-gradient(135deg, #f5f5f5, #eaeaea);
 }
 
-
-.stat {
+.overlay-stat-row {
   display: flex;
-  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.overlay-stat-label {
+  width: 110px;
+  display: flex;
+  gap: 6px;
   font-size: 14px;
 }
 
+.overlay-stat-bar {
+  flex: 1;
+  height: 8px;
+  background: #eee;
+  border-radius: 6px;
+  overflow: hidden;
+}
 
+.overlay-stat-fill {
+  height: 100%;
+  border-radius: 6px;
+}
+
+
+
+
+.overlay-stat-value {
+  width: 35px;
+  text-align: right;
+  font-weight: bold;
+}
+
+
+.small-stats {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.stat {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.stat small {
+  width: 35px;
+  font-weight: bold;
+}
+
+.stat-bar {
+  flex: 1;
+  height: 6px;
+  background-color: #e0e0e0;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.stat-fill {
+  height: 100%;
+  background-color: #ff4d4d;
+  border-radius: 10px;
+  transition: width 0.3s ease;
+}
+
+.overlay-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.tabs {
+  display: flex;
+  justify-content: space-around;
+  margin: 20px 0;
+}
+
+.tab-content {
+  margin-top: 20px;
+}
+
+.stat-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 4px;
+}
+
+
+
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.about-item {
+  background: #f5f5f5;
+  padding: 10px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.about-label {
+  font-size: 12px;
+  color: #666;
+}
+
+.about-value {
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.abilities-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.ability-badge {
+  display: inline-block;
+  padding: 6px 12px;
+  margin: 4px;
+  border-radius: 20px;
+  background-color: #f1f1f1;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+
+.types {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+  margin: 5px 0;
+}
+
+.type {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 14px;
+  text-transform: capitalize;
+  color: white;
+  display: inline-block;
+}
+
+.type.grass { background: #78C850; }
+.type.fire { background: #F08030; }
+.type.water { background: #6890F0; }
+.type.electric { background: #F8D030; }
+.type.poison { background: #A040A0; }
+.type.bug { background: #A8B820; }
+.type.flying { background: #A890F0; }
+.type.ground { background: #E0C068; }
+.type.fairy { background: #EE99AC; }
+.type.fighting { background: #C03028; }
+.type.psychic { background: #F85888; }
+.type.rock { background: #B8A038; }
+.type.ghost { background: #705898; }
+.type.ice { background: #98D8D8; }
+.type.dragon { background: #7038F8; }
+.type.dark { background: #705848; }
+.type.steel { background: #B8B8D0; }
+.type.normal { background: #A8A878; }
+
+#evolution_container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.evo-item {
+  cursor: pointer;
+  text-align: center;
+}
+
+.evo-item img {
+  width: 100px;
+  transition: 0.3s;
+}
+
+.evo-item img:hover {
+  transform: scale(1.1);
+}
+
+.evo-name {
+  margin-top: 5px;
+  font-weight: bold;
+  text-transform: capitalize;
+}
+
+.evo-arrow {
+  font-size: 24px;
+}
 
 
 .pokeball-btn {
@@ -705,11 +947,11 @@ p {
 
 /*FOOTER  */
 .footer {
-  display: flex;
-  justify-content: center;
-  background-color: #efedea;
-  height: 100px;
-  align-items: center;
+    display: flex;
+    justify-content: center;
+    background-color: #ffd601;
+    height: 100px;
+    align-items: center;
 }
 
 .footer_content {

@@ -18,10 +18,16 @@ function pokemonCardTemplate(pokemon, index) {
 
 */
 
+
+
 function pokemonCardTemplate(pokemon, index) {
+  const type = getPokemonMainType(pokemon);
+  const color = TYPE_COLORS[type] || DEFAULT_TYPE_COLOR;
+
   return `
     <div class="col-6 col-md-4 col-lg-3 mb-3">
       <div class="card h-100 shadow-sm pokemon-card"
+           style="background-color:${color}20"
            onclick="openOverlay(${index})">
 
         <div class="card-header text-center fw-bold">
@@ -110,6 +116,19 @@ function statBarTemplate(width) {
   `;
 }
 
+function overlayHeaderTemplate(pokemon) {
+  const type = getPokemonMainType(pokemon);
+  const color = TYPE_COLORS[type] || DEFAULT_TYPE_COLOR;
+
+  return `
+    <div style="background:${color}; padding:20px; border-radius:12px;">
+      ${overlayCloseButtonTemplate()}
+      ${overlayTitleTemplate(pokemon)}
+      ${overlayImageTemplate(pokemon)}
+    </div>
+  `;
+}
+
 function overlayCloseButtonTemplate() {
   return `<button onclick="closeOverlay(event)">X</button>`;
 }
@@ -130,18 +149,19 @@ function overlayTabsTemplate() {
       <button onclick="showTab('about')">About</button>
       <button onclick="showTab('stats')">Stats</button>
       <button onclick="showTab('abilities')">Abilities</button>
+      <button onclick="showTab('evolution')">Evolution</button>
     </div>
   `;
 }
 
 
-
-function overlayContentWrapperTemplate(about, stats, abilities) {
+function overlayContentWrapperTemplate(about, stats, abilities, evolution) {
   return `
     <div class="tab-content">
       ${overlayTabDivTemplate("about", about)}
       ${overlayTabDivTemplate("stats", stats)}
       ${overlayTabDivTemplate("abilities", abilities)}
+      ${overlayTabDivTemplate("evolution", evolution)}
     </div>
   `;
 }
@@ -155,29 +175,30 @@ function overlayTabDivTemplate(name, content) {
 }
 
 
-
 function overlayAboutTemplate(pokemon) {
   return `
-    <p>Height: ${pokemon.height}</p>
-    <p>Weight: ${pokemon.weight}</p>
+    <div class="about-grid">
+      ${aboutItemTemplate("📏 Height", pokemon.height)}
+      ${aboutItemTemplate("⚖ Weight", pokemon.weight)}
+      ${aboutItemTemplate("🎯 Base XP", pokemon.base_experience)}
+    </div>
+  `;
+}
+
+
+function aboutItemTemplate(label, value) {
+  return `
+    <div class="about-item">
+      <div class="about-label">${label}</div>
+      <div class="about-value">${value}</div>
+    </div>
   `;
 }
 
 
 
 //+++
-function overlayStatsTemplate(pokemon) {
-  let html = "";
 
-  for (let i = 0; i < pokemon.stats.length; i++) {
-    html += overlayStatRowTemplate(
-      pokemon.stats[i].stat.name,
-      pokemon.stats[i].base_stat
-    );
-  }
-
-  return html;
-}
 //+++
 
 function overlayStatsWrapperTemplate(content) {
@@ -189,44 +210,65 @@ function overlayStatsWrapperTemplate(content) {
 }
 
 function overlayStatRowTemplate(name, value) {
+  let width = Math.min(value, 100);
+
   return `
-    <div class="stat-row">
-      <span>${name}</span>
-      <span>${value}</span>
+    <div class="overlay-stat-row">
+      ${overlayStatLabelTemplate(name)}
+      ${overlayStatBarTemplate(name, width)}
+      ${overlayStatValueTemplate(value)}
     </div>
   `;
 }
 
+function overlayStatLabelTemplate(name) {
+  return `
+    <div class="overlay-stat-label">
+      ${getStatIcon(name)}
+      <span>${name.toUpperCase()}</span>
+    </div>
+  `;
+}
 
+function overlayStatBarTemplate(name, width) {
+  const color = getStatIcon(name);
+
+  return `
+    <div class="overlay-stat-bar">
+      <div class="overlay-stat-fill"
+           style="width:${width}%; background-color:${color}">
+      </div>
+    </div>
+  `;
+}
+
+function overlayStatValueTemplate(value) {
+  return `<div class="overlay-stat-value">${value}</div>`;
+}
 
 //++++
-function overlayAbilitiesTemplate(pokemon) {
-  let items = "";
 
-  for (let i = 0; i < pokemon.abilities.length; i++) {
-    items += overlayAbilityItemTemplate(
-      pokemon.abilities[i].ability.name
-    );
-  }
-
-  return overlayAbilitiesListTemplate(items);
-}
 //+++
 
 function overlayAbilitiesWrapperTemplate(content) {
   return `
-    <ul class="abilities-list">
+    <div class="abilities-container">
       ${content}
-    </ul>
+    </div>
   `;
 }
+
 
 function overlayAbilitiesListTemplate(content) {
   return `<ul>${content}</ul>`;
 }
 
 function overlayAbilityItemTemplate(name) {
-  return `<li>${name}</li>`;
+  return `
+    <span class="ability-badge">
+      ✨ ${name}
+    </span>
+  `;
 }
 
 
@@ -238,6 +280,24 @@ function overlayNavigationTemplate() {
       <button onclick="nextPokemon()">→</button>
     </div>
   `;
+}
+
+
+function overlayEvolutionTemplate() {
+  return `<div id="evolution_container">Loading...</div>`;
+}
+
+function evolutionItemTemplate(name) {
+  return `
+    <div class="evo-item" onclick="openPokemonByName('${name}')">
+      <img src="https://img.pokemondb.net/artwork/${name}.jpg">
+      <div class="evo-name">${name}</div>
+    </div>
+  `;
+}
+
+function evolutionArrowTemplate() {
+  return `<div class="evo-arrow">➡️</div>`;
 }
 
 

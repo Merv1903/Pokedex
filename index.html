@@ -31,23 +31,36 @@
   </head>
   <body onload="init()">
     <div class="body_element">
-      <header class="header" id="head">
-        <div class="header_content">
-          <div class="header_left">
-            <img
-              class="header_left_logo"
-              src="img/pokeball-1594373_1280.png"
-              alt="logo"
-            />
-            <div>
-              <h1 class="header_left_logo_caption">POKEMON</h1>
-              <h3 class="header_left_logo_caption_subtitle">
-                Let the Games Begin
-              </h3>
-            </div>
-          </div>
-        </div>
-      </header>
+   <header class="header" id="head">
+  <div class="header_content">
+
+
+    <div class="header_left">
+      <img
+        class="header_left_logo"
+        src="img/pokeball-1594373_1280.png"
+        alt="logo"
+      />
+      <div>
+        <h1 class="header_left_logo_caption">POKEMON</h1>
+        <h3 class="header_left_logo_caption_subtitle">
+          Let the Games Begin
+        </h3>
+      </div>
+    </div>
+
+    <div class="header_search">
+      <input
+        type="text"
+        id="searchInput"
+        placeholder="Search Pokémon..."
+        oninput="handleSearch()"
+      />
+      <div id="searchMessage" class="search-message d-none"></div>
+    </div>
+
+  </div>
+</header>
       <!--Content -->
       <main id="content" class="content">
         <div id="loader" class="loader d-none"></div>
