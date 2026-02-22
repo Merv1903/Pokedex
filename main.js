@@ -305,15 +305,17 @@ function overlayStatsTemplate(pokemon) {
   return overlayStatsWrapperTemplate(rows);
 }
 
-function getStatIcon(name) {
-  if (name === "hp") return "#4CAF50";
-  if (name === "attack") return "#F44336";
-  if (name === "defense") return "#2196F3";
-  if (name === "special-attack") return "#FF9800";
-  if (name === "special-defense") return "#9C27B0";
-  if (name === "speed") return "#FFC107";
 
-  return "#999";
+function getStatColor(name) {
+  switch(name) {
+    case "hp": return "#4CAF50";
+    case "attack": return "#f44336";
+    case "defense": return "#2196F3";
+    case "special-attack": return "#ff9800";
+    case "special-defense": return "#9c27b0";
+    case "speed": return "#ffeb3b";
+    default: return "#ccc";
+  }
 }
 
 function overlayAbilitiesTemplate(pokemon) {
@@ -339,6 +341,10 @@ function updateOverlayContent(pokemon) {
     overlayNavigationTemplate();
 }
 
+
+function capitalizeFirstLetter(text) {
+  return text.charAt(0).toUpperCase() + text.slice(1);
+}
 
 function overlayHeaderTemplate(pokemon) {
   return (
@@ -442,6 +448,7 @@ function hideAllTabs() {
   document.getElementById("tab_about").classList.add("d-none");
   document.getElementById("tab_stats").classList.add("d-none");
   document.getElementById("tab_abilities").classList.add("d-none");
+  document.getElementById("tab_evolution").classList.add("d-none");
 }
 
 

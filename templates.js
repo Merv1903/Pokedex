@@ -59,7 +59,7 @@ function pokemonNameTemplate(pokemon) {
 
 function pokemonImageTemplate(pokemon) {
   return `
-    <img src="${pokemon.sprites.front_default}"
+    <img class="pokemon-card-image" src="${pokemon.sprites.front_default}"
          class="card-img-top p-3"
          alt="${pokemon.name}">
   `;
@@ -130,16 +130,20 @@ function overlayHeaderTemplate(pokemon) {
 }
 
 function overlayCloseButtonTemplate() {
-  return `<button onclick="closeOverlay(event)">X</button>`;
+  return `<button class="button-close-overlay" onclick="closeOverlay(event)">X</button>`;
 }
 
 
 function overlayTitleTemplate(pokemon) {
-  return `<h2>#${pokemon.id} ${pokemon.name}</h2>`;
+  return `
+    <h2 class="overlay-title">
+      #${pokemon.id} ${capitalizeFirstLetter(pokemon.name)}
+    </h2>
+  `;
 }
 
 function overlayImageTemplate(pokemon) {
-  return `<img src="${pokemon.sprites.front_default}">`;
+  return `<img class="pokemon-overlay-image" src="${pokemon.sprites.front_default}">`;
 }
 
 
@@ -224,19 +228,19 @@ function overlayStatRowTemplate(name, value) {
 function overlayStatLabelTemplate(name) {
   return `
     <div class="overlay-stat-label">
-      ${getStatIcon(name)}
+      
       <span>${name.toUpperCase()}</span>
     </div>
   `;
 }
 
 function overlayStatBarTemplate(name, width) {
-  const color = getStatIcon(name);
+  const color = getStatColor(name);
 
   return `
     <div class="overlay-stat-bar">
       <div class="overlay-stat-fill"
-           style="width:${width}%; background-color:${color}">
+           style="width:${width}%; background-color:${color};">
       </div>
     </div>
   `;
