@@ -61,7 +61,7 @@ body.overlay_no_scroll {
   gap: 40px;
   width: 90vw;
   justify-content: space-between;
-
+flex-wrap: wrap;
 }
 
 .header_left {
@@ -160,6 +160,12 @@ height: 200px;
 }
 
 
+@media (max-width: 480px) {
+  .pokemon-name {
+          font-size: 16px;
+  }
+}
+
 
 .overlay {
   position: fixed;
@@ -191,6 +197,16 @@ height: 200px;
   flex-direction: column;
   gap: 8px;
 }
+
+
+
+@media (max-width: 480px) {
+#overlay_inner {
+    width: 262px;
+  }
+}
+
+
 
 
 .overlay-card {
@@ -327,7 +343,33 @@ height: 200px;
   justify-content: space-around;
   margin: 20px 0;
   gap: 10px;
+  flex-wrap: wrap-reverse;
 }
+
+
+@media (max-width: 400px) {
+ .tabs {
+    
+     justify-content: space-between;
+  }
+}
+
+@media (max-width: 400px) {
+
+  .overlay {
+    align-items: flex-start;   
+    padding-top: 20px;
+    padding-bottom: 20px;
+    overflow-y: auto;      
+  }
+
+  .overlay-content {
+    max-height: none;          
+    margin: 0 auto;
+  }
+
+}
+
 
 .tab-content {
   margin-top: 20px;
@@ -388,6 +430,7 @@ height: 200px;
   justify-content: center;
   gap: 5px;
   margin: 5px 0;
+      flex-wrap: wrap;
 }
 
 .type {
@@ -546,6 +589,14 @@ justify-self: flex-end;
   text-shadow: 2px 2px 6px rgba(0,0,0,0.3);
 }
 
+
+@media (max-width: 400px) {
+ .overlay-title  {
+      font-size: 16px;
+  }
+}
+
+
 h4 {
   margin: 0;
   padding: 0;
@@ -583,6 +634,14 @@ p {
   color: rgba(0, 0, 0, 0.8);
   cursor: pointer;
 }
+
+
+@media (max-width: 400px) {
+  .footer_imprint  {
+      font-size: 14px;
+  }
+}
+
 
 .footer_imprint:hover {
   text-decoration: underline;
