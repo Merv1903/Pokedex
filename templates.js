@@ -1,29 +1,4 @@
-
-/*
-function pokemonCardTemplate(pokemon, index) {
-  return `
-    <div class="col-6 col-md-4 col-lg-3">
-      <div class="card h-100 shadow-sm pokemon-card"onclick="openOverlay(${index})">
-
-        <img src="${pokemon.sprites.front_default}"class="card-img-top p-3">
-
-        <div class="card-body text-center">
-          <h6 class="card-title">#${pokemon.id}</h6>
-          <p class="card-text text-capitalize">${pokemon.name}</p>
-        </div>
-      </div>
-    </div>
-  `;
-}
-
-*/
-
-
-
-function pokemonCardTemplate(pokemon, index) {
-  const type = getPokemonMainType(pokemon);
-  const color = TYPE_COLORS[type] || DEFAULT_TYPE_COLOR;
-
+function pokemonCardTemplate(index, number, image, name, types, stats, color) {
   return `
     <div class="col-6 col-md-4 col-lg-3 mb-3">
       <div class="card h-100 shadow-sm pokemon-card"
@@ -31,15 +6,15 @@ function pokemonCardTemplate(pokemon, index) {
            onclick="openOverlay(${index})">
 
         <div class="card-header text-center fw-bold">
-          ${pokemonNumberTemplate(pokemon)}
+          ${number}
         </div>
 
-        ${pokemonImageTemplate(pokemon)}
+        ${image}
 
         <div class="card-body text-center">
-          ${pokemonNameTemplate(pokemon)}
-          ${pokemonTypesTemplate(pokemon)}
-          ${smallStatsTemplate(pokemon)}
+          ${name}
+          ${types}
+          ${stats}
         </div>
 
       </div>
@@ -65,8 +40,6 @@ function pokemonImageTemplate(pokemon) {
   `;
 }
 
-
-// +++++
 function pokemonTypesWrapperTemplate(content) {
   return `
     <div class="types d-flex justify-content-center gap-1">
@@ -74,14 +47,10 @@ function pokemonTypesWrapperTemplate(content) {
     </div>
   `;
 }
-//++++
 
 function pokemonTypeBadgeTemplate(typeName) {
   return `<span class="type ${typeName}">${typeName}</span>`;
 }
-
-
-
 
 function smallStatsTemplate(pokemon) {
   return `
@@ -116,23 +85,18 @@ function statBarTemplate(width) {
   `;
 }
 
-function overlayHeaderTemplate(pokemon) {
-  const type = getPokemonMainType(pokemon);
-  const color = TYPE_COLORS[type] || DEFAULT_TYPE_COLOR;
-
+function overlayHeaderTemplateHtml(color, closeButton, title, image) {
   return `
     <div style="background:${color}; padding:20px; border-radius:12px;">
-      ${overlayCloseButtonTemplate()}
-      ${overlayTitleTemplate(pokemon)}
-      ${overlayImageTemplate(pokemon)}
+      ${closeButton}
+      ${title}
+      ${image}
     </div>
   `;
 }
-
 function overlayCloseButtonTemplate() {
   return `<button class="button-close-overlay" onclick="closeOverlay(event)">X</button>`;
 }
-
 
 function overlayTitleTemplate(pokemon) {
   return `
@@ -146,7 +110,6 @@ function overlayImageTemplate(pokemon) {
   return `<img class="pokemon-overlay-image" src="${pokemon.sprites.front_default}">`;
 }
 
-
 function overlayTabsTemplate() {
   return `
     <div class="tabs">
@@ -157,7 +120,6 @@ function overlayTabsTemplate() {
     </div>
   `;
 }
-
 
 function overlayContentWrapperTemplate(about, stats, abilities, evolution) {
   return `
@@ -178,7 +140,6 @@ function overlayTabDivTemplate(name, content) {
   `;
 }
 
-
 function overlayAboutTemplate(pokemon) {
   return `
     <div class="about-grid">
@@ -189,7 +150,6 @@ function overlayAboutTemplate(pokemon) {
   `;
 }
 
-
 function aboutItemTemplate(label, value) {
   return `
     <div class="about-item">
@@ -199,12 +159,6 @@ function aboutItemTemplate(label, value) {
   `;
 }
 
-
-
-//+++
-
-//+++
-
 function overlayStatsWrapperTemplate(content) {
   return `
     <div class="overlay-stats">
@@ -213,13 +167,11 @@ function overlayStatsWrapperTemplate(content) {
   `;
 }
 
-function overlayStatRowTemplate(name, value) {
-  let width = Math.min(value, 100);
-
+function overlayStatRowTemplateHtml(label, width, value, color) {
   return `
     <div class="overlay-stat-row">
-      ${overlayStatLabelTemplate(name)}
-      ${overlayStatBarTemplate(name, width)}
+      ${overlayStatLabelTemplate(label)}
+      ${overlayStatBarTemplateHtml(width, color)}
       ${overlayStatValueTemplate(value)}
     </div>
   `;
@@ -234,9 +186,7 @@ function overlayStatLabelTemplate(name) {
   `;
 }
 
-function overlayStatBarTemplate(name, width) {
-  const color = getStatColor(name);
-
+function overlayStatBarTemplateHtml(width, color) {
   return `
     <div class="overlay-stat-bar">
       <div class="overlay-stat-fill"
@@ -250,10 +200,6 @@ function overlayStatValueTemplate(value) {
   return `<div class="overlay-stat-value">${value}</div>`;
 }
 
-//++++
-
-//+++
-
 function overlayAbilitiesWrapperTemplate(content) {
   return `
     <div class="abilities-container">
@@ -261,7 +207,6 @@ function overlayAbilitiesWrapperTemplate(content) {
     </div>
   `;
 }
-
 
 function overlayAbilitiesListTemplate(content) {
   return `<ul>${content}</ul>`;
@@ -275,8 +220,6 @@ function overlayAbilityItemTemplate(name) {
   `;
 }
 
-
-
 function overlayNavigationTemplate() {
   return `
     <div class="overlay-nav">
@@ -285,7 +228,6 @@ function overlayNavigationTemplate() {
     </div>
   `;
 }
-
 
 function overlayEvolutionTemplate() {
   return `<div id="evolution_container">Loading...</div>`;
@@ -303,51 +245,3 @@ function evolutionItemTemplate(name) {
 function evolutionArrowTemplate() {
   return `<div class="evo-arrow">➡️</div>`;
 }
-
-
-
-/*
-
-function overlayTemplate(pokemon) {
-  return `
-    <div class="overlay-card" onclick="event.stopPropagation()">
-
-      <div class="card-header text-center fw-bold fs-4">
-        #${pokemon.id} ${pokemon.name}
-      </div>
-
-      <img src="${pokemon.sprites.front_default}" alt="${pokemon.name}">
-
-      <div class="card-body d-flex flex-column gap-2">
-
-        <div class="stat">
-          <span>Height</span>
-          <span>${pokemon.height}</span>
-        </div>
-
-        <div class="stat">
-          <span>Weight</span>
-          <span>${pokemon.weight}</span>
-        </div>
-
-        <div class="stat">
-          <span>Attack</span>
-          <span>${pokemon.stats[1].base_stat}</span>
-        </div>
-
-        <div class="stat">
-          <span>Defense</span>
-          <span>${pokemon.stats[2].base_stat}</span>
-        </div>
-
-        <button class="btn btn-dark mt-auto overlay-close-btn"
-                onclick="closeOverlay(event)">
-          Close
-        </button>
-
-      </div>
-    </div>
-  `;
-}
-
-*/

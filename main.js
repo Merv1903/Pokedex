@@ -22,7 +22,7 @@ const TYPE_COLORS = {
   dragon: "#7038F8",
   dark: "#705848",
   steel: "#B8B8D0",
-  flying: "#A890F0"
+  flying: "#A890F0",
 };
 
 const DEFAULT_TYPE_COLOR = "#777";
@@ -44,19 +44,13 @@ function handleSearch() {
   handleValidInput(input, message);
 }
 
-
 function getSearchInput() {
-  return document
-    .getElementById("searchInput")
-    .value
-    .toLowerCase()
-    .trim();
+  return document.getElementById("searchInput").value.toLowerCase().trim();
 }
 
 function getSearchMessageElement() {
   return document.getElementById("searchMessage");
 }
-
 
 function inputTooShort(input) {
   return input.length < 3;
@@ -65,10 +59,11 @@ function inputTooShort(input) {
 function handleShortInput(message) {
   resetPokemonList();
   hideSearchMessage(message);
+  enableLoadButton();
 }
 
-
 function handleValidInput(input, message) {
+  disableLoadButton();
   const filtered = filterPokemons(input);
   clearPokemonContainer();
 
@@ -81,25 +76,29 @@ function handleValidInput(input, message) {
   renderFilteredPokemons(filtered);
 }
 
+function disableLoadButton() {
+  document.getElementById("load_more_btn").style.display = "none";
+}
+
+function enableLoadButton() {
+  document.getElementById("load_more_btn").style.display = "flex";
+}
 
 function filterPokemons(input) {
-  return allPokemons.filter(pokemon =>
-    pokemon.name.includes(input)
-  );
+  return allPokemons.filter((pokemon) => pokemon.name.includes(input));
 }
 
 function filteredEmpty(filtered) {
   return filtered.length === 0;
 }
 
-
 function clearPokemonContainer() {
   document.getElementById("pokemons_container").innerHTML = "";
 }
 
 function renderFilteredPokemons(filtered) {
-  filtered.forEach(pokemon => {
-    const index = allPokemons.findIndex(p => p.name === pokemon.name);
+  filtered.forEach((pokemon) => {
+    const index = allPokemons.findIndex((p) => p.name === pokemon.name);
     renderPokemonCard(pokemon, index);
   });
 }
@@ -119,17 +118,11 @@ function hideSearchMessage(message) {
 function showNoResultsMessage(input) {
   const message = getSearchMessageElement();
 
-  message.innerHTML =
-    `No results for "${input}" – please type an existing name`;
+  message.innerHTML = `No results for "${input}" – please type an existing name`;
 
   message.classList.remove("d-none");
 }
 
-
-
-
-
-//Pokemon Type
 function getPokemonTypeBadges(pokemon) {
   let badges = "";
   for (let i = 0; i < pokemon.types.length; i++) {
@@ -138,32 +131,6 @@ function getPokemonTypeBadges(pokemon) {
   return badges;
 }
 
-
-
-/*
-async function loadNextPokemons() {
-  if (isLoading) {
-    return;
-  }
-
-  isLoading = true;
-  showLoader();
-
-  let data = await loadPokemons(currentOffset, limit);
-
-  for (let i = 0; i < data.results.length; i++) {
-    let pokemonData = await loadSinglePokemon(data.results[i].url);
-    allPokemons.push(pokemonData);
-    renderPokemon(pokemonData, allPokemons.length - 1);
-  }
-
-  currentOffset = currentOffset + limit;
-  hideLoader();
-  isLoading = false;
-}
-*/
-
-//Load
 function showLoader() {
   document.getElementById("loader").classList.remove("d-none");
 }
@@ -172,21 +139,21 @@ function hideLoader() {
   document.getElementById("loader").classList.add("d-none");
 }
 
-
 async function loadNextPokemons() {
   if (isLoading) return;
 
-  startLoading();
-  let data = await loadPokemonBatch();
-  await processPokemonBatch(data);
-  finishLoading();
-}
+  try {
+    isLoading = true;
+    showLoader();
 
-function startLoading() {
-  isLoading = true;
-  showLoader();
+    let data = await loadPokemonBatch();
+    await processPokemonBatch(data);
+  } catch (error) {
+    console.error("API Error", error);
+  } finally {
+    finishLoading();
+  }
 }
-
 
 async function loadPokemonBatch() {
   return await loadPokemons(currentOffset, limit);
@@ -200,18 +167,15 @@ async function processPokemonBatch(data) {
   increaseOffset();
 }
 
-
 async function loadAndRenderSinglePokemon(url) {
   let pokemon = await loadSinglePokemon(url);
   savePokemon(pokemon);
   renderLastPokemon();
 }
 
-
 function savePokemon(pokemon) {
   allPokemons.push(pokemon);
 }
-
 
 function renderLastPokemon() {
   let index = allPokemons.length - 1;
@@ -219,61 +183,61 @@ function renderLastPokemon() {
   renderPokemonCard(pokemon, index);
 }
 
-
 function increaseOffset() {
   currentOffset += limit;
 }
-
 
 function finishLoading() {
   hideLoader();
   isLoading = false;
 }
 
-
-//Render
-
 function getPokemonMainType(pokemon) {
   return pokemon.types[0].type.name;
 }
-
 function renderPokemonCard(pokemon, index) {
-  let container = document.getElementById("pokemons_container");
-  container.innerHTML += pokemonCardTemplate(pokemon, index);
+  const data = getPokemonCardTemplateData(pokemon);
+
+  appendPokemonCard(
+    pokemonCardTemplate(
+      index,
+      data.number,
+      data.image,
+      data.name,
+      data.types,
+      data.stats,
+      data.color,
+    ),
+  );
 }
 
+function getPokemonCardTemplateData(pokemon) {
+  const type = getPokemonMainType(pokemon);
+  const color = TYPE_COLORS[type] || DEFAULT_TYPE_COLOR;
 
+  return {
+    number: pokemonNumberTemplate(pokemon),
+    image: pokemonImageTemplate(pokemon),
+    name: pokemonNameTemplate(pokemon),
+    types: pokemonTypesTemplate(pokemon),
+    stats: smallStatsTemplate(pokemon),
+    color: color,
+  };
+}
+
+function appendPokemonCard(html) {
+  document.getElementById("pokemons_container").innerHTML += html;
+}
 
 function pokemonTypesTemplate(pokemon) {
   let items = "";
 
   for (let i = 0; i < pokemon.types.length; i++) {
-    items += pokemonTypeBadgeTemplate(
-      pokemon.types[i].type.name
-    );
+    items += pokemonTypeBadgeTemplate(pokemon.types[i].type.name);
   }
 
   return pokemonTypesWrapperTemplate(items);
 }
-
-/*
-function openOverlay(index) {
-  let overlay = document.getElementById("overlay");
-  let inner = document.getElementById("overlay_inner");
-
-  inner.innerHTML = overlayTemplate(allPokemons[index]);
-  overlay.classList.remove("d-none");
-}
-
-function closeOverlay(event) {
-  event.stopPropagation();
-  let overlay = document.getElementById("overlay");
-  overlay.classList.add("d-none");
-}
-
-*/
-
-//Overlay
 
 function openOverlay(index) {
   currentOverlayIndex = index;
@@ -285,12 +249,9 @@ function openOverlay(index) {
   loadAndRenderEvolution(pokemon);
 }
 
-
-
 function getCurrentPokemon() {
   return allPokemons[currentOverlayIndex];
 }
-
 
 function overlayStatsTemplate(pokemon) {
   let rows = "";
@@ -298,23 +259,52 @@ function overlayStatsTemplate(pokemon) {
   for (let i = 0; i < pokemon.stats.length; i++) {
     rows += overlayStatRowTemplate(
       pokemon.stats[i].stat.name,
-      pokemon.stats[i].base_stat
+      pokemon.stats[i].base_stat,
     );
   }
 
   return overlayStatsWrapperTemplate(rows);
 }
 
+function overlayStatRowTemplate(name, value) {
+  const data = getOverlayStatRowData(name, value);
+
+  return overlayStatRowTemplateHtml(
+    data.label,
+    data.width,
+    data.value,
+    data.color,
+  );
+}
+
+function getOverlayStatRowData(name, value) {
+  const width = Math.min(value, 100);
+  const color = getStatColor(name);
+
+  return {
+    label: name,
+    width: width,
+    value: value,
+    color: color,
+  };
+}
 
 function getStatColor(name) {
-  switch(name) {
-    case "hp": return "#4CAF50";
-    case "attack": return "#f44336";
-    case "defense": return "#2196F3";
-    case "special-attack": return "#ff9800";
-    case "special-defense": return "#9c27b0";
-    case "speed": return "#ffeb3b";
-    default: return "#ccc";
+  switch (name) {
+    case "hp":
+      return "#4CAF50";
+    case "attack":
+      return "#f44336";
+    case "defense":
+      return "#2196F3";
+    case "special-attack":
+      return "#ff9800";
+    case "special-defense":
+      return "#9c27b0";
+    case "speed":
+      return "#ffeb3b";
+    default:
+      return "#ccc";
   }
 }
 
@@ -322,14 +312,11 @@ function overlayAbilitiesTemplate(pokemon) {
   let items = "";
 
   for (let i = 0; i < pokemon.abilities.length; i++) {
-    items += overlayAbilityItemTemplate(
-      pokemon.abilities[i].ability.name
-    );
+    items += overlayAbilityItemTemplate(pokemon.abilities[i].ability.name);
   }
 
   return overlayAbilitiesWrapperTemplate(items);
 }
-
 
 function updateOverlayContent(pokemon) {
   let inner = document.getElementById("overlay_inner");
@@ -341,32 +328,43 @@ function updateOverlayContent(pokemon) {
     overlayNavigationTemplate();
 }
 
-
 function capitalizeFirstLetter(text) {
   return text.charAt(0).toUpperCase() + text.slice(1);
 }
 
 function overlayHeaderTemplate(pokemon) {
-  return (
-    overlayCloseButtonTemplate() +
-    overlayTitleTemplate(pokemon) +
-    overlayImageTemplate(pokemon)
+  const data = getOverlayHeaderTemplateData(pokemon);
+
+  return overlayHeaderTemplateHtml(
+    data.color,
+    data.closeButton,
+    data.title,
+    data.image,
   );
 }
 
+function getOverlayHeaderTemplateData(pokemon) {
+  const type = getPokemonMainType(pokemon);
+  const color = TYPE_COLORS[type] || DEFAULT_TYPE_COLOR;
+
+  return {
+    color: color,
+    closeButton: overlayCloseButtonTemplate(),
+    title: overlayTitleTemplate(pokemon),
+    image: overlayImageTemplate(pokemon),
+  };
+}
 
 function overlayMainContentTemplate(pokemon) {
   return overlayContentWrapperTemplate(
     overlayAboutTemplate(pokemon),
     overlayStatsTemplate(pokemon),
     overlayAbilitiesTemplate(pokemon),
-    overlayEvolutionTemplate()
+    overlayEvolutionTemplate(),
   );
 }
 
 //
-
-
 
 async function loadEvolutionChain(pokemon) {
   const speciesResponse = await fetch(pokemon.species.url);
@@ -377,10 +375,6 @@ async function loadEvolutionChain(pokemon) {
 
   return extractEvolutionNames(evoData.chain);
 }
-
-
-
-
 
 function extractEvolutionNames(chain) {
   let evolutions = [];
@@ -397,12 +391,10 @@ function extractEvolutionNames(chain) {
   return evolutions;
 }
 
-
 async function loadAndRenderEvolution(pokemon) {
   const names = await loadEvolutionChain(pokemon);
   renderEvolutionChain(names);
 }
-
 
 function renderEvolutionChain(names) {
   const container = document.getElementById("evolution_container");
@@ -418,25 +410,24 @@ function renderEvolutionChain(names) {
 }
 
 function openPokemonByName(name) {
-  const index = allPokemons.findIndex(p => p.name === name);
+  const index = allPokemons.findIndex((p) => p.name === name);
 
   if (index !== -1) {
     openOverlay(index);
   }
 }
 
-
 function showOverlay() {
-  let overlay = document.getElementById("overlay");
-  overlay.classList.remove("d-none");
+  document.body.classList.add("overlay_no_scroll");
+  document.getElementById("overlay").classList.remove("d-none");
 }
 
 function closeOverlay(event) {
   event.stopPropagation();
-  let overlay = document.getElementById("overlay");
-  overlay.classList.add("d-none");
-}
 
+  document.body.classList.remove("overlay_no_scroll");
+  document.getElementById("overlay").classList.add("d-none");
+}
 
 //
 function showTab(tabName) {
@@ -450,7 +441,6 @@ function hideAllTabs() {
   document.getElementById("tab_abilities").classList.add("d-none");
   document.getElementById("tab_evolution").classList.add("d-none");
 }
-
 
 function nextPokemon() {
   currentOverlayIndex++;
@@ -467,4 +457,3 @@ function prevPokemon() {
   }
   openOverlay(currentOverlayIndex);
 }
-

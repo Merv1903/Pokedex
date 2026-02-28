@@ -1,12 +1,19 @@
-let BASE_URL = "https://pokeapi.co/api/v2/pokemon";
+const BASE_URL = "https://pokeapi.co/api/v2/pokemon";
 let evolutionCache = {};
 
 async function loadPokemons(offset, limit) {
-  let response = await fetch(BASE_URL + "?offset=" + offset + "&limit=" + limit);
-  let data = await response.json();
-  return data;
-}
+  try {
+    let response = await fetch(
+      `${BASE_URL}?offset=${offset}&limit=${limit}`
+    );
 
+    return await response.json();
+
+  } catch (error) {
+    console.error("Pokemon API not reachable", error);
+    return { results: [] };
+  }
+}
 
 async function loadSinglePokemon(url) {
   let response = await fetch(url);
